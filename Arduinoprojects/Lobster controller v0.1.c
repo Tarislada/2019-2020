@@ -29,6 +29,8 @@ bool isTrial = false;
 bool isAttackArmed = false;
 bool isAttacked = false;
 
+bood timelimitreached = false;
+
 // Time variable
 unsigned long blockOnSetTime = 0;
 unsigned long attackOnSetTime = 0;
@@ -257,7 +259,7 @@ void loop()
       {
         digitalWrite(PIN_PUMP_OUTPUT,HIGH);
         pumpingtime = millis();
-        while (millis()<pumpingtime+500);
+        while (millis()<pumpingtime+750);
         {}
         digitalWrite(PIN_PUMP_OUTPUT,LOW);
       }
@@ -300,7 +302,7 @@ void loop()
 
       if(numLick%10 == 0)
       {
-        if(numLick%50 == 0)
+        if(numLick%20 == 0)
         { 
           unsigned long timepassed = millis() - blockOnSetTime;
           Serial.print(long(timepassed / 1000 / 60));
@@ -320,9 +322,10 @@ void loop()
     }
   }
   //Time alert when set amount of time has passed
-  if(millis() - blockOnSetTime>timelimit)
+  if (timelimitreached == false && millis() - blockOnSetTime>timelimit)
   {
     Serial.println("###### Alert: Timelimit reached! ######")
+    timelimitreached = true;
   }
 }
 
