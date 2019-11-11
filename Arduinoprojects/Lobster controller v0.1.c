@@ -36,7 +36,8 @@ unsigned long attackOffsetTime;
 
 unsigned long accumLickTime = 0; // accum licking time 
 unsigned long lickStartTime = 0;
-unsigned long timelimit = 0;
+unsigned long timelimit = 0;     // duration of each Trials
+unsigned long pumpingtime = 0;   // internal variable for auto-running pumps
 
 // Etc.
 int percentage_attack_in_6sec = 70; //six second attack probability
@@ -132,7 +133,18 @@ void setup()
     }
   }
   // Setup : Time limit
-  
+  invalidInput = true;
+  Serial.println("Duration? (in minutes): ")
+  while (invalidInput)
+  {
+    if (Serial.available())
+    {
+      timelimit = Serial.parseInt();
+      timelimit = timelimit*1000*60;
+      invalidInput = false;
+    }
+  }
+
   // Review current protocol
   Serial.println("==========Current Protocol===========");
   Serial.print("Attack in 6sec : ");
@@ -241,6 +253,14 @@ void loop()
       isAttackArmed = false;
       isAttacked = false;
       digitalWrite(PIN_TRIAL_OUTPUT,LOW);
+      if (trial%2=0)
+      {
+        digitalWrite(PIN_PUMP_OUTPUT,HIGH);
+        pumpingtime = millis();
+        while (millis()<pumpingtime+500);
+        {}
+        digitalWrite(PIN_PUMP_OUTPUT,LOW);
+      }
     }
   }
 
@@ -300,7 +320,7 @@ void loop()
     }
   }
   //Time alert when set amount of time has passed
-  if(timelimit<millis())
+  if(millis() - blockOnSetTime>timelimit)
   {
     Serial.println("###### Alert: Timelimit reached! ######")
   }
