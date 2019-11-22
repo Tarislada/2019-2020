@@ -1,0 +1,10 @@
+[pfy,pffs] = audioread('DoMiSolDo-Pf.mp3');
+[vny,vnfs] = audioread('DoMiSolDo-Vn.mp3');
+pf1 = abs(fft(pfy(:,1)));
+pf2 = abs(fft(pfy(:,2)));
+vn1 = fft(vny(:,1));
+vn2 = fft(vny(:,2));
+fpf1 = (0:length(pf1)-1)*50/length(pf1);
+fpf2 = (0:length(pf2)-1)*50/length(pf2);
+fvn1 = (0:length(vn1)-1)*50/length(vn1);
+fvn2 = (0:length(vn2)-1)*50/length(vn2);
