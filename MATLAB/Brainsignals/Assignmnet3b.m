@@ -2,10 +2,23 @@
 [pfy,pffs] = audioread('DoMiSolDo-Pf.mp3');
 pfy = mean(pfy,2);
 for ii = 1:3
-    Domi(ii,:) = pfy(1+88200*(ii-1):1+88200*(ii));
+    DoMiSol(ii,:) = pfy(1+88200*(ii-1):1+88200*(ii));
 end
-DoMiSol = sum(Domi,1);
-%% 
+Chord = sum(DoMiSol,1);
+%% Assignment3(a)
+figure(1)
+Do_x = (0:length(DoMiSol(1,:))-1)*50/length(DoMiSol(1,:));
+plot(Do_x,DoMiSol(1,:))
+dof0= mean(pitch(DoMiSol(1,:)',44100));
 
-pf1 = fftshift(abs(fft(DoMiSol)));
-fpf1 = (0:length(pf1)-1)*50/length(pf1);
+figure(2)
+Mi_x = (0:length(DoMiSol(2,:))-1)*50/length(DoMiSol(2,:));
+plot(Mi_x,DoMiSol(2,:))
+
+figure(3)
+Sol_x = (0:length(DoMiSol(3,:))-1)*50/length(DoMiSol(3,:));
+plot(Sol_x,DoMiSol(3,:))
+
+figure(4)
+Chord_x = (0:length(Chord)-1)*50/length(Chord);
+plot(Chord_x,Chord)
